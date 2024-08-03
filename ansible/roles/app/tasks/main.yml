@@ -1,0 +1,28 @@
+---
+- name: Clone repository
+  become: true
+  git: repo='{{ repository_url }}' dest='{{ repository_path }}'
+  notify:
+    - Restart App
+
+- name: Install requirements
+  become: true
+  pip: 
+    requirements: "{{ repository_path }}/app/requirements.txt"
+    break_system_packages: true
+
+- name: Install app as service
+  become: true
+  copy: 
+    remote_src: true
+    src: '/opt/{{ app_name }}/service/{{ app_name }}.service'
+    dest: '/etc/systemd/system/{{ app_name }}.service'
+    mode: '0644'
+
+- name: Enable and Start app as service
+  become: true
+  ansible.builtin.systemd_service:
+    name: '{{ app_name }}'
+    daemon_reload: true
+    enabled: true
+    state: started

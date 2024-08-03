@@ -1,0 +1,17 @@
+---
+- name: "Ansible Deployment"
+  hosts: all
+  remote_user: ubuntu
+  vars:
+    repository_url: https://github.com/abhineet09/flask-app.git
+    repository_path: /opt/flask-app
+    app_name: 'flask-app'
+  roles:
+    - python
+    - app
+  handlers:
+    - name: Restart App
+      become: true
+      service:
+        name: '{{ app_name }}'
+        state: restarted
