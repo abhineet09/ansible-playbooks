@@ -1,0 +1,13 @@
+# Run stress test on hosts with configurable patterns
+---
+- name: "Ansible Stress Test"
+  hosts: all
+  remote_user: ubuntu
+  vars:
+    stress_cpu: "1"
+    stress_io: "1"
+    stress_vm: "1"
+    stress_vm_bytes: "128M"
+    stress_timeout: "300s"
+  roles:
+    - stress

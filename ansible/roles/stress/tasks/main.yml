@@ -1,0 +1,12 @@
+---
+- name: install stress
+  become: true
+  apt:
+    name:
+      - stress
+    update_cache: yes
+
+- name: run stress test
+  become: true
+  shell: 
+    cmd: "stress --cpu {{ stress_cpu }} --io {{ stress_io }} --vm {{ stress_vm }} --vm-bytes {{ stress_vm_bytes }} --timeout {{ stress_timeout }}"
